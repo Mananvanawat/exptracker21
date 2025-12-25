@@ -1,5 +1,6 @@
 package com.example.exptracker21.auth;
 
+import com.example.exptracker21.eventProducer.UserInfoProducer;
 import com.example.exptracker21.repository.UserRepository;
 import com.example.exptracker21.service.UserDetailsServiceImpl;
 import lombok.Data;
@@ -33,10 +34,13 @@ public class SecurityConfig {
     @Autowired
     private final UserDetailsServiceImpl userDetailsServiceImpl;
 
+    @Autowired
+    private final UserInfoProducer userInfoProducer;
+
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return new UserDetailsServiceImpl(userRepository, passwordEncoder);
+        return new UserDetailsServiceImpl(userRepository, passwordEncoder, userInfoProducer);
     }
 
     @Bean

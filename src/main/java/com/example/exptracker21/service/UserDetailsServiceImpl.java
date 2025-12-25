@@ -1,6 +1,7 @@
 package com.example.exptracker21.service;
 
 import com.example.exptracker21.entities.UserInfo;
+import com.example.exptracker21.eventProducer.UserInfoProducer;
 import com.example.exptracker21.model.UserInfoData;
 import com.example.exptracker21.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
-
+    @Autowired
+    private final UserInfoProducer userInfoProducer;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -50,6 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         String userId = UUID.randomUUID().toString();
         userRepository.save(new UserInfo(userId, userInfoData.getUsername(), userInfoData.getPassword(), new HashSet<>()));
+        userInfoProducer.sendEventToKafka(userInfoData);
         return true;
     }
 }

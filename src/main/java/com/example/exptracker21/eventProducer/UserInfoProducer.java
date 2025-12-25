@@ -1,0 +1,27 @@
+package com.example.exptracker21.eventProducer;
+
+import com.example.exptracker21.model.UserInfoData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserInfoProducer {
+    private final KafkaTemplate<String, UserInfoData> kafkaTemplate;
+
+    @Value("${spring.kafka.topic-json.name}")
+    private String TOPIC_NAME_1;
+
+    @Autowired
+    public UserInfoProducer(KafkaTemplate<String, UserInfoData> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+    public void sendEventToKafka(UserInfoData userInfoDto) {
+        Message<UserInfoData> message = MessageBuilder.withPayload(userInfoDto).setHeader(KafkaHeaders.TOPIC, TOPIC_NAME_1).build();
+    }
+}
