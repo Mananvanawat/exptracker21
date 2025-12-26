@@ -18,7 +18,7 @@ public class UserinfoSerializer implements Serializer<UserInfoData> {
         byte[] retVal = null;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            retVal = objectMapper.writeValueAsString(s).getBytes();
+            retVal = objectMapper.writeValueAsString(userInfoData).getBytes();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
